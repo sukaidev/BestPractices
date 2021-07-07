@@ -1,2 +1,4 @@
 rootProject.name = "ViewBindingAptDemo"
 include ':app'
+include ':compiler'
+include ':annotations'
