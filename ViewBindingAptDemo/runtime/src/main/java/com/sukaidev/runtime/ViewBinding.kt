@@ -2,6 +2,7 @@ package com.sukaidev.runtime
 
 import android.app.Activity
 import android.app.Application
+import kotlin.collections.LinkedHashMap
 
 /**
  * Created by sukaidev on 2021/07/03.
@@ -11,7 +12,7 @@ class ViewBinding {
 
     private val BINDINGS = LinkedHashMap<String, Class<*>>()
 
-    private val activityLifecycleCallback = ViewBindingLifecycleCallback()
+    private val activityLifecycleCallback = BindingActivityLifecycleCallback()
 
     fun init(app: Application) {
         app.registerActivityLifecycleCallbacks(activityLifecycleCallback)
@@ -21,8 +22,13 @@ class ViewBinding {
         val bindingClassName = activity.javaClass.name + BINDING_CLASS_POSTFIX
         var bindingClass = BINDINGS[bindingClassName]
         if (bindingClass == null) {
-            bindingClass = Class.forName(bindingClassName)
-            BINDINGS[bindingClassName] = bindingClass
+            try {
+                bindingClass = Class.forName(bindingClassName)
+                BINDINGS[bindingClassName] = bindingClass
+            } catch (e: ClassNotFoundException) {
+                e.printStackTrace()
+                return
+            }
         }
         bindingClass?.getDeclaredMethod("bind", Activity::class.java)?.invoke(null, activity)
     }

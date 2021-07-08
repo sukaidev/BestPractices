@@ -9,5 +9,4 @@ import javax.lang.model.SourceVersion
  */
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.BINARY)
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 annotation class BindView(val redId: Int)

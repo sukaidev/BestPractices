@@ -1,6 +1,6 @@
 package com.sukaidev.compiler.binding
 
-import java.lang.reflect.Field
+import com.sukaidev.compiler.binding.entity.BindingView
 import java.util.*
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
@@ -9,9 +9,9 @@ import javax.lang.model.element.TypeElement
  * Created by sukaidev on 2021/07/02.
  * @author sukaidev
  */
-class BindingActivity(private val typeElement: TypeElement) {
+class BindingActivity(val typeElement: TypeElement) {
 
-    val fields = TreeSet<Field>()
+    val bindingViews = TreeSet<BindingView>()
 
     val simpleName: String = typeElement.simpleName.toString()
 
@@ -19,9 +19,11 @@ class BindingActivity(private val typeElement: TypeElement) {
 
     val isAbstract = typeElement.modifiers.contains(Modifier.ABSTRACT)
 
-    val isKotlin = typeElement.getAnnotation(Metadata::class.java) !=null
+    val isKotlin = typeElement.getAnnotation(Metadata::class.java) != null
+
+    val builder = BindingActivityBuilder(this)
 
     override fun toString(): String {
-        return "$packageName.$simpleName[${fields.joinToString()}]"
+        return "$packageName.$simpleName[${bindingViews.joinToString()}]"
     }
 }

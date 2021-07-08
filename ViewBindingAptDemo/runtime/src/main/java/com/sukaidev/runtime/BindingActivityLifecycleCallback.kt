@@ -8,7 +8,7 @@ import android.os.Bundle
  * Created by sukaidev on 2021/07/03.
  * @author sukaidev
  */
-class ViewBindingLifecycleCallback : Application.ActivityLifecycleCallbacks {
+class BindingActivityLifecycleCallback : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
     }
@@ -34,5 +34,6 @@ class ViewBindingLifecycleCallback : Application.ActivityLifecycleCallbacks {
     }
 
     override fun onActivityDestroyed(activity: Activity) {
+        ViewBinding.INSTANCE.performOnUnBind(activity)
     }
 }

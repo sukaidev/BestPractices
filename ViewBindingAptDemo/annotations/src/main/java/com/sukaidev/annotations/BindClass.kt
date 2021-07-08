@@ -12,5 +12,4 @@ import javax.lang.model.SourceVersion
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.BINARY)
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
-annotation class BindClass(val layoutId: Int)
+annotation class BindClass()

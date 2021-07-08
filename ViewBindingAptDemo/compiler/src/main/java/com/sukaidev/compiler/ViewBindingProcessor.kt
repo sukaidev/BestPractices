@@ -4,14 +4,24 @@ import com.google.auto.service.AutoService
 import com.sukaidev.annotations.BindClass
 import com.sukaidev.annotations.BindView
 import com.sukaidev.compiler.binding.BindingActivity
+import com.sukaidev.compiler.binding.BindingFragment
+import com.sukaidev.compiler.binding.const.Constant.ACTIVITY_JVM_CLASS_NAME
+import com.sukaidev.compiler.binding.const.Constant.FRAGMENT_JVM_CLASS_NAME
+import com.sukaidev.compiler.binding.const.Constant.VIEW_JVM_CLASS_NAME
+import com.sukaidev.compiler.binding.entity.BindingView
+import com.sukaidev.compiler.util.ContextHolder
+import com.sukaidev.compiler.util.ContextHolder.elements
+import com.sukaidev.compiler.util.ContextHolder.types
 import com.sukaidev.compiler.util.Logger
-import java.lang.Exception
-import javax.annotation.processing.*
+import com.sukaidev.compiler.util.isSubType
+import com.sun.tools.javac.code.Symbol
+import javax.annotation.processing.AbstractProcessor
+import javax.annotation.processing.ProcessingEnvironment
+import javax.annotation.processing.Processor
+import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
-import javax.lang.model.util.Elements
-import javax.lang.model.util.Types
 
 /**
  * Created by sukaidev on 2021/07/02.
@@ -24,54 +34,73 @@ import javax.lang.model.util.Types
 @AutoService(Processor::class)
 class ViewBindingProcessor : AbstractProcessor() {
 
-    private lateinit var types: Types
-    private lateinit var filer: Filer
-    private lateinit var elements: Elements
-
-    override fun getSupportedAnnotationTypes() = setOf(BindView::class.java.name)
-
-    override fun getSupportedSourceVersion() = SourceVersion.RELEASE_8
-
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
-        filer = processingEnv.filer
-        types = processingEnv.typeUtils
-        elements = processingEnv.elementUtils
-
         Logger.init(processingEnv.messager)
+        ContextHolder.init(processingEnv)
     }
 
     override fun process(
-        annotations: MutableSet<out TypeElement>,
-        roundEnv: RoundEnvironment
+            annotations: MutableSet<out TypeElement>,
+            roundEnv: RoundEnvironment
     ): Boolean {
         val bindingActivities = HashMap<Element, BindingActivity>()
-        val bindingFragments = HashMap<Element, BindingActivity>()
+        val bindingFragments = HashMap<Element, BindingFragment>()
 
-        // 第一步，收集所有标注了注解的类
-        val activityType = elements.getTypeElement("android.app.Activity").asType()
-        val fragmentType = elements.getTypeElement("androidx.fragment.app").asType()
+        // 第一步，收集所有标注了注解的Activity
+        val activityType = elements.getTypeElement(ACTIVITY_JVM_CLASS_NAME).asType()
+        val fragmentType = elements.getTypeElement(FRAGMENT_JVM_CLASS_NAME).asType()
         roundEnv.getElementsAnnotatedWith(BindClass::class.java)
-            .filter { it.kind.isClass }
-            .forEach {
-                try {
-                    when {
-                        types.isSubtype(it.asType(), activityType) -> {
-                            bindingActivities[it] = BindingActivity(it as TypeElement)
+                .filter { it.kind.isClass }
+                .forEach {
+                    try {
+                        when {
+                            types.isSubtype(it.asType(), activityType) -> {
+                                bindingActivities[it] = BindingActivity(it as TypeElement)
+                            }
+                            types.isSubtype(it.asType(), fragmentType) -> {
+                                bindingFragments[it] = BindingFragment(it as TypeElement)
+                            }
+                            else -> {
+                                Logger.error(it, "Unsupported typeElement:${it.simpleName}")
+                            }
                         }
-                        types.isSubtype(it.asType(), fragmentType) -> {
-                            bindingFragments[it] = BindingActivity(it as TypeElement)
-                        }
-                        else -> {
-                            Logger.error(it, "Unsupported typeElement:${it.simpleName}")
-                        }
+                    } catch (e: Exception) {
+                        Logger.logParsingError(it, BindClass::class.java, e)
                     }
-                } catch (e: Exception) {
-                    Logger.logParsingError(it, BindClass::class.java, e)
                 }
-            }
 
-
-        return false
+        // 第二步，收集所有标注了注解的View
+        val viewType = elements.getTypeElement(VIEW_JVM_CLASS_NAME).asType()
+        roundEnv.getElementsAnnotatedWith(BindView::class.java)
+                .filter { it.kind.isField }
+                .forEach {
+                    try {
+                        // 必须是View的子类
+                        if (it.isSubType(viewType, types)) {
+                            if (it.enclosingElement.isSubType(activityType, types)) {
+                                bindingActivities[it.enclosingElement]?.bindingViews?.add(BindingView(it as Symbol.VarSymbol))
+                                        ?: Logger.error(it, "BindingView $it annotated as @BindView while ${it.enclosingElement} not annotated.")
+                            }
+                            if (it.enclosingElement.isSubType(fragmentType, types)) {
+                                bindingFragments[it.enclosingElement]?.bindingViews?.add(BindingView(it as Symbol.VarSymbol))
+                                        ?: Logger.error(it, "BindingView $it annotated as @BindView while ${it.enclosingElement} not annotated.")
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Logger.logParsingError(it, BindView::class.java, e)
+                    }
+                }
+        bindingActivities.values.forEach {
+            it.builder.build()
+        }
+        bindingFragments.values.forEach {
+            it.builder.build()
+        }
+        return true
     }
+
+    override fun getSupportedAnnotationTypes() = setOf(BindClass::class.java.name, BindView::class.java.name)
+
+    override fun getSupportedSourceVersion() = SourceVersion.RELEASE_8
 }
