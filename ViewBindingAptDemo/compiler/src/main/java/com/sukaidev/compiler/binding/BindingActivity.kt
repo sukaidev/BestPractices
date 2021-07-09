@@ -11,8 +11,6 @@ import javax.lang.model.element.TypeElement
  */
 class BindingActivity(val typeElement: TypeElement) {
 
-    val resId: Int = 0
-
     val bindingViews = TreeSet<BindingView>()
 
     val simpleName: String = typeElement.simpleName.toString()

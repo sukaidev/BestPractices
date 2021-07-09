@@ -2,7 +2,7 @@ package com.sukaidev.runtime
 
 import android.app.Activity
 import android.app.Application
-import kotlin.collections.LinkedHashMap
+import androidx.fragment.app.Fragment
 
 /**
  * Created by sukaidev on 2021/07/03.
@@ -13,19 +13,22 @@ class ViewBinding {
     private val BINDINGS = LinkedHashMap<String, UnBinder>()
 
     private val activityLifecycleCallback = BindingActivityLifecycleCallback()
+    private val fragmentLifecycleCallback = BindingFragmentLifecycleCallback()
 
     fun init(app: Application) {
         app.registerActivityLifecycleCallbacks(activityLifecycleCallback)
     }
 
-    fun bind(activity: Activity) {
-        val activityClass = activity::class.java
-        val bindingClassName = activity.javaClass.name + BINDING_CLASS_POSTFIX
+    fun bind(source: Any) {
+        if (source !is Activity && source !is Fragment) return
+
+        val sourceClass = source::class.java
+        val bindingClassName = source.javaClass.name + BINDING_CLASS_POSTFIX
         var unBinder = BINDINGS[bindingClassName]
         try {
             if (unBinder == null) {
-                val bindingClass = Class.forName(activityClass.name)?.classLoader?.loadClass(bindingClassName) ?: return
-                unBinder = bindingClass.getConstructor(activityClass).newInstance(activity) as UnBinder
+                val bindingClass = Class.forName(sourceClass.name)?.classLoader?.loadClass(bindingClassName) ?: return
+                unBinder = bindingClass.getConstructor(sourceClass).newInstance(source) as UnBinder
                 BINDINGS[bindingClassName] = unBinder
             }
             unBinder.bind()
@@ -33,15 +36,26 @@ class ViewBinding {
             e.printStackTrace()
             return
         }
+
+        if (source is Fragment) {
+            source.parentFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallback, false)
+        }
     }
 
-    fun unBind(activity: Activity) {
-        val bindingClassName = activity.javaClass.name + BINDING_CLASS_POSTFIX
+
+    fun unBind(source: Any) {
+        if (source !is Activity && source !is Fragment) return
+
+        val bindingClassName = source.javaClass.name + BINDING_CLASS_POSTFIX
 
         val unBinder = BINDINGS[bindingClassName] ?: return
         unBinder.unBind()
 
         BINDINGS.remove(bindingClassName)
+
+        if (source is Fragment) {
+            source.parentFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallback)
+        }
     }
 
     companion object {

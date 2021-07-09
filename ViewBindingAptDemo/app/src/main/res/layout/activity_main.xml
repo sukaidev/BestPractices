@@ -4,27 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="50dp"
         android:text="触发"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_hello"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="20dp"
-        android:text="Hello Kotlin"
-        app:layout_constraintEnd_toEndOf="@id/button_action"
-        app:layout_constraintStart_toStartOf="@id/button_action"
-        app:layout_constraintTop_toBottomOf="@id/button_action" />
+        app:layout_constraintTop_toBottomOf="@id/fragment_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

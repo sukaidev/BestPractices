@@ -9,7 +9,7 @@ import javax.lang.model.element.TypeElement
  * Created by sukaidev on 2021/07/02.
  * @author sukaidev
  */
-class BindingFragment(private val typeElement: TypeElement) {
+class BindingFragment(val typeElement: TypeElement) {
 
     val bindingViews = TreeSet<BindingView>()
 
