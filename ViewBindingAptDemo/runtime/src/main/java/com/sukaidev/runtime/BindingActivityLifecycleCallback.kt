@@ -15,7 +15,6 @@ class BindingActivityLifecycleCallback : Application.ActivityLifecycleCallbacks 
 
     override fun onActivityPostCreated(activity: Activity, savedInstanceState: Bundle?) {
         super.onActivityPostCreated(activity, savedInstanceState)
-        ViewBinding.INSTANCE.performOnBind(activity)
     }
 
     override fun onActivityStarted(activity: Activity) {
@@ -34,6 +33,6 @@ class BindingActivityLifecycleCallback : Application.ActivityLifecycleCallbacks 
     }
 
     override fun onActivityDestroyed(activity: Activity) {
-        ViewBinding.INSTANCE.performOnUnBind(activity)
+        ViewBinding.INSTANCE.unBind(activity)
     }
 }

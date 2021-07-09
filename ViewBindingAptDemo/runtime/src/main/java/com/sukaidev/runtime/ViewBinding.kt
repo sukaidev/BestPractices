@@ -18,23 +18,28 @@ class ViewBinding {
         app.registerActivityLifecycleCallbacks(activityLifecycleCallback)
     }
 
-    fun performOnBind(activity: Activity) {
+    fun bind(activity: Activity) {
         val bindingClassName = activity.javaClass.name + BINDING_CLASS_POSTFIX
         var bindingClass = BINDINGS[bindingClassName]
-        if (bindingClass == null) {
-            try {
+        try {
+            if (bindingClass == null) {
                 bindingClass = Class.forName(bindingClassName)
                 BINDINGS[bindingClassName] = bindingClass
-            } catch (e: ClassNotFoundException) {
-                e.printStackTrace()
-                return
             }
+            bindingClass?.getDeclaredMethod("bind", Activity::class.java)?.invoke(null, activity)
+        } catch (e: ClassNotFoundException) {
+            e.printStackTrace()
+            return
         }
-        bindingClass?.getDeclaredMethod("bind", Activity::class.java)?.invoke(null, activity)
     }
 
-    fun performOnUnBind(activity: Activity) {
+    fun unBind(activity: Activity) {
         val bindingClassName = activity.javaClass.name + BINDING_CLASS_POSTFIX
+
+        val bindingClass = BINDINGS[bindingClassName] ?: return
+
+
+
         BINDINGS.remove(bindingClassName)
     }
 

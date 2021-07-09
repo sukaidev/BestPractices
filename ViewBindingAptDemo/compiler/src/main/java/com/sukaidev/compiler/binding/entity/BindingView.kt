@@ -14,13 +14,11 @@ typealias  KotlinTypeName = com.squareup.kotlinpoet.TypeName
  * Created by sukaidev on 2021/07/02.
  * @author sukaidev
  */
-open class BindingView(private val symbol: Symbol.VarSymbol) : Comparable<BindingView> {
+open class BindingView(val symbol: Symbol.VarSymbol) : Comparable<BindingView> {
 
     val name = symbol.qualifiedName.toString()
 
     val isPrivate = symbol.isPrivate
-
-    val isPrimitive = symbol.type.isPrimitive
 
     override fun toString(): String {
         return "$name:${symbol.type}"

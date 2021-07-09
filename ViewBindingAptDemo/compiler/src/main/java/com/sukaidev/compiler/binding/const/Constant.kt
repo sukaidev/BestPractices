@@ -20,4 +20,8 @@ object Constant {
     const val FRAGMENT_JVM_CLASS_NAME = "androidx.fragment.app.Fragment"
 
     const val VIEW_JVM_CLASS_NAME = "android.view.View"
+
+    const val UTIL_CLASS_PACKAGE_NAME = "com.sukaidev.runtime"
+
+    const val UTIL_CLASS_SIMPLE_NAME = "Utils"
 }

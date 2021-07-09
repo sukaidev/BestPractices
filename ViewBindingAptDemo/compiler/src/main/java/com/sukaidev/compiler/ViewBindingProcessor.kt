@@ -1,6 +1,5 @@
 package com.sukaidev.compiler
 
-import com.google.auto.service.AutoService
 import com.sukaidev.annotations.BindClass
 import com.sukaidev.annotations.BindView
 import com.sukaidev.compiler.binding.BindingActivity
@@ -17,7 +16,6 @@ import com.sukaidev.compiler.util.isSubType
 import com.sun.tools.javac.code.Symbol
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.ProcessingEnvironment
-import javax.annotation.processing.Processor
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
@@ -31,7 +29,6 @@ import javax.lang.model.element.TypeElement
  *
  * @author sukaidev
  */
-@AutoService(Processor::class)
 class ViewBindingProcessor : AbstractProcessor() {
 
     override fun init(processingEnv: ProcessingEnvironment) {
@@ -46,6 +43,8 @@ class ViewBindingProcessor : AbstractProcessor() {
     ): Boolean {
         val bindingActivities = HashMap<Element, BindingActivity>()
         val bindingFragments = HashMap<Element, BindingFragment>()
+
+
 
         // 第一步，收集所有标注了注解的Activity
         val activityType = elements.getTypeElement(ACTIVITY_JVM_CLASS_NAME).asType()

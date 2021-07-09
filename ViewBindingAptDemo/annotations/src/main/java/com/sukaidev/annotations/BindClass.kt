@@ -12,4 +12,4 @@ import javax.lang.model.SourceVersion
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.BINARY)
-annotation class BindClass()
+annotation class BindClass
