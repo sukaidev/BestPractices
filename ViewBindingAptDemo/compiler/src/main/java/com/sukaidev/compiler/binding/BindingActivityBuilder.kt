@@ -3,9 +3,9 @@ package com.sukaidev.compiler.binding
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.jvm.jvmDefault
 import com.sukaidev.annotations.BindView
-import com.sukaidev.compiler.binding.const.Constant.ACTIVITY_JVM_CLASS_NAME
 import com.sukaidev.compiler.binding.const.Constant.BINDING_CLASS_POSTFIX
 import com.sukaidev.compiler.binding.const.Constant.BIND_METHOD_NAME
+import com.sukaidev.compiler.binding.const.Constant.UNBINDER_JVM_CLASS_NAME
 import com.sukaidev.compiler.binding.const.Constant.UNBIND_METHOD_NAME
 import com.sukaidev.compiler.binding.const.Constant.UTIL_CLASS_PACKAGE_NAME
 import com.sukaidev.compiler.binding.const.Constant.UTIL_CLASS_SIMPLE_NAME
@@ -26,6 +26,7 @@ class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
 
         val typeBuilder = TypeSpec.classBuilder(bindingActivity.simpleName + BINDING_CLASS_POSTFIX)
             .addModifiers(KModifier.PUBLIC, KModifier.FINAL)
+            .addSuperinterface(elements.getTypeElement(UNBINDER_JVM_CLASS_NAME).asClassName())
 
         buildConstructor(typeBuilder)
         buildBindViews(typeBuilder)
@@ -42,12 +43,12 @@ class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
     private fun buildConstructor(typeBuilder: TypeSpec.Builder) {
         val primaryConstructor = FunSpec.constructorBuilder()
             .addParameter(
-                ParameterSpec.builder("activity", elements.getTypeElement(ACTIVITY_JVM_CLASS_NAME).asClassName().copy(true), KModifier.PRIVATE)
+                ParameterSpec.builder("activity", bindingActivity.typeElement.asClassName().copy(true), KModifier.PRIVATE)
                     .build()
             )
             .build()
 
-        val propertyActivity = PropertySpec.builder("activity", elements.getTypeElement(ACTIVITY_JVM_CLASS_NAME).asClassName().copy(true), KModifier.PRIVATE)
+        val propertyActivity = PropertySpec.builder("activity", bindingActivity.typeElement.asClassName().copy(true), KModifier.PRIVATE)
             .initializer("activity")
             .mutable()
             .build()
@@ -86,10 +87,9 @@ class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
      */
     private fun buildBindFunction(typeBuilder: TypeSpec.Builder) {
         val bindFunBuilder = FunSpec.builder(BIND_METHOD_NAME)
-            .addParameter("activity", elements.getTypeElement(ACTIVITY_JVM_CLASS_NAME).asClassName())
-            .addModifiers(KModifier.PUBLIC)
+            .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
             .beginControlFlow("if (activity is %T)", bindingActivity.typeElement)
-            .returns(UNIT)
+            .returns(elements.getTypeElement(UNBINDER_JVM_CLASS_NAME).asClassName().copy(true))
 
         bindingActivity.bindingViews.forEach {
             if (it.isPrivate) {
@@ -98,10 +98,12 @@ class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
             }
 
             val name = it.name
-            bindFunBuilder.addStatement("activity.$name = $name!!")
+            bindFunBuilder.addStatement("activity?.$name = $name!!")
         }
+        bindFunBuilder.addStatement("return this")
+            .endControlFlow()
+            .addStatement("return null")
 
-        bindFunBuilder.endControlFlow()
         typeBuilder.addFunction(bindFunBuilder.build())
     }
 
@@ -110,6 +112,7 @@ class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
      */
     private fun buildUnBindFunction(typeBuilder: TypeSpec.Builder) {
         val unBindMethodBuilder = FunSpec.builder(UNBIND_METHOD_NAME)
+            .addModifiers(KModifier.OVERRIDE)
             .returns(UNIT)
 
         typeBuilder.propertySpecs.forEach {

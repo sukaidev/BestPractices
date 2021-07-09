@@ -5,15 +5,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
-import com.sukaidev.annotations.BindClass
-import com.sukaidev.annotations.BindView
 import com.sukaidev.runtime.ViewBinding
 
-//import butterknife.BindView
-//import butterknife.ButterKnife
-
-//import com.sukaidev.annotations.BindClass
-//import com.sukaidev.annotations.BindView
+import com.sukaidev.annotations.BindClass
+import com.sukaidev.annotations.BindView
 
 /**
  * Created by sukaidev on 2021/07/06.
@@ -32,9 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        ButterKnife.bind(this)
         ViewBinding.INSTANCE.bind(this)
-
 
         button.setOnClickListener {
             Toast.makeText(this, "绑定成功！", Toast.LENGTH_SHORT).show()

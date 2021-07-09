@@ -7,6 +7,9 @@ import android.net.Uri
 
 /**
  * Created by sukaidev on 2021/07/03.
+ *
+ * 用于初始化Runtime.
+ *
  * @author sukaidev
  */
 class RuntimeProvider : ContentProvider() {

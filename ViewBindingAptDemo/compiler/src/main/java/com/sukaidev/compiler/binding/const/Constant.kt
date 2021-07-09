@@ -15,6 +15,8 @@ object Constant {
 
     const val UNBIND_METHOD_NAME = "unBind"
 
+    const val UNBINDER_JVM_CLASS_NAME =  "com.sukaidev.runtime.UnBinder"
+
     const val ACTIVITY_JVM_CLASS_NAME = "android.app.Activity"
 
     const val FRAGMENT_JVM_CLASS_NAME = "androidx.fragment.app.Fragment"

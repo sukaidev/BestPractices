@@ -10,7 +10,7 @@ import kotlin.collections.LinkedHashMap
  */
 class ViewBinding {
 
-    private val BINDINGS = LinkedHashMap<String, Class<*>>()
+    private val BINDINGS = LinkedHashMap<String, UnBinder>()
 
     private val activityLifecycleCallback = BindingActivityLifecycleCallback()
 
@@ -19,14 +19,16 @@ class ViewBinding {
     }
 
     fun bind(activity: Activity) {
+        val activityClass = activity::class.java
         val bindingClassName = activity.javaClass.name + BINDING_CLASS_POSTFIX
-        var bindingClass = BINDINGS[bindingClassName]
+        var unBinder = BINDINGS[bindingClassName]
         try {
-            if (bindingClass == null) {
-                bindingClass = Class.forName(bindingClassName)
-                BINDINGS[bindingClassName] = bindingClass
+            if (unBinder == null) {
+                val bindingClass = Class.forName(activityClass.name)?.classLoader?.loadClass(bindingClassName) ?: return
+                unBinder = bindingClass.getConstructor(activityClass).newInstance(activity) as UnBinder
+                BINDINGS[bindingClassName] = unBinder
             }
-            bindingClass?.getDeclaredMethod("bind", Activity::class.java)?.invoke(null, activity)
+            unBinder.bind()
         } catch (e: ClassNotFoundException) {
             e.printStackTrace()
             return
@@ -36,9 +38,8 @@ class ViewBinding {
     fun unBind(activity: Activity) {
         val bindingClassName = activity.javaClass.name + BINDING_CLASS_POSTFIX
 
-        val bindingClass = BINDINGS[bindingClassName] ?: return
-
-
+        val unBinder = BINDINGS[bindingClassName] ?: return
+        unBinder.unBind()
 
         BINDINGS.remove(bindingClassName)
     }

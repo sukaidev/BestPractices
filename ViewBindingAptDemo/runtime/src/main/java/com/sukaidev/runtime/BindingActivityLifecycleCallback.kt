@@ -6,6 +6,7 @@ import android.os.Bundle
 
 /**
  * Created by sukaidev on 2021/07/03.
+ * 实现Activity的自动解绑.
  * @author sukaidev
  */
 class BindingActivityLifecycleCallback : Application.ActivityLifecycleCallbacks {
