@@ -1,8 +1,5 @@
 package com.sukaidev.annotations
 
-import javax.annotation.processing.SupportedSourceVersion
-import javax.lang.model.SourceVersion
-
 /**
  * Created by sukaidev on 2021/07/02.
  * @author sukaidev
