@@ -1,4 +1,4 @@
-package com.sukaidev.compiler.binding.const
+package com.sukaidev.processor.binding.const
 
 import com.squareup.kotlinpoet.ClassName
 

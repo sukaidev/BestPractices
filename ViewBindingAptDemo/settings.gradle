@@ -1,5 +1,5 @@
 rootProject.name = "ViewBindingAptDemo"
 include ':app'
-include ':compiler'
+include ':processor'
 include ':annotations'
 include ':runtime'

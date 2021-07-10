@@ -1,4 +1,4 @@
-package com.sukaidev.compiler.util
+package com.sukaidev.processor.util
 
 import java.io.PrintWriter
 import java.io.StringWriter

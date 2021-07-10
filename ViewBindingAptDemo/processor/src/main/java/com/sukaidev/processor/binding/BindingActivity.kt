@@ -1,6 +1,6 @@
-package com.sukaidev.compiler.binding
+package com.sukaidev.processor.binding
 
-import com.sukaidev.compiler.binding.entity.BindingView
+import com.sukaidev.processor.binding.entity.BindingView
 import java.util.*
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement

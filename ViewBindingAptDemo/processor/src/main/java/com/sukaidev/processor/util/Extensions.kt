@@ -1,4 +1,4 @@
-package com.sukaidev.compiler.util
+package com.sukaidev.processor.util
 
 import javax.lang.model.element.Element
 import javax.lang.model.type.TypeMirror

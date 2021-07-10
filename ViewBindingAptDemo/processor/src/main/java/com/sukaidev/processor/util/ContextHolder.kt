@@ -1,4 +1,4 @@
-package com.sukaidev.compiler.util
+package com.sukaidev.processor.util
 
 import javax.annotation.processing.Filer
 import javax.annotation.processing.Messager

@@ -1,4 +1,4 @@
-package com.sukaidev.compiler.binding.entity
+package com.sukaidev.processor.binding.entity
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
@@ -53,4 +53,4 @@ open class BindingView(val symbol: Symbol.VarSymbol) : Comparable<BindingView> {
     }
 }
 
-private val STRING_ARRAY = ClassName("kotlin", "Array").parameterizedBy(com.sukaidev.compiler.binding.const.STRING)
+private val STRING_ARRAY = ClassName("kotlin", "Array").parameterizedBy(com.sukaidev.processor.binding.const.STRING)

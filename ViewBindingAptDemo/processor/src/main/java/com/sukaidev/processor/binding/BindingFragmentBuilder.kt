@@ -1,32 +1,32 @@
-package com.sukaidev.compiler.binding
+package com.sukaidev.processor.binding
 
 import com.squareup.kotlinpoet.*
 import com.sukaidev.annotations.BindView
-import com.sukaidev.compiler.binding.const.*
-import com.sukaidev.compiler.util.ContextHolder.elements
-import com.sukaidev.compiler.util.ContextHolder.filer
-import com.sukaidev.compiler.util.Logger
+import com.sukaidev.processor.binding.const.*
+import com.sukaidev.processor.util.ContextHolder
+import com.sukaidev.processor.util.Logger
 import javax.tools.StandardLocation
 
 /**
  * Created by sukaidev on 2021/07/02.
  * @author sukaidev
  */
-class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
+class BindingFragmentBuilder(private val bindingFragment: BindingFragment) {
+
 
     fun build() {
-        if (bindingActivity.isAbstract) return
+        if (bindingFragment.isAbstract) return
 
-        val typeBuilder = TypeSpec.classBuilder(bindingActivity.simpleName + BINDING_CLASS_POSTFIX)
+        val typeBuilder = TypeSpec.classBuilder(bindingFragment.simpleName + BINDING_CLASS_POSTFIX)
             .addModifiers(KModifier.PUBLIC, KModifier.FINAL)
-            .addSuperinterface(elements.getTypeElement(UNBINDER_JVM_CLASS_NAME).asClassName())
+            .addSuperinterface(ContextHolder.elements.getTypeElement(UNBINDER_JVM_CLASS_NAME).asClassName())
 
         buildConstructor(typeBuilder)
         buildBindViews(typeBuilder)
         buildBindFunction(typeBuilder)
         buildUnBindFunction(typeBuilder)
 
-        val fileBuilder = FileSpec.builder(bindingActivity.packageName, bindingActivity.simpleName + BINDING_CLASS_POSTFIX)
+        val fileBuilder = FileSpec.builder(bindingFragment.packageName, bindingFragment.simpleName + BINDING_CLASS_POSTFIX)
             .addImport(UTIL_CLASS_PACKAGE_NAME, UTIL_CLASS_SIMPLE_NAME)
             .addType(typeBuilder.build())
 
@@ -36,18 +36,18 @@ class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
     private fun buildConstructor(typeBuilder: TypeSpec.Builder) {
         val primaryConstructor = FunSpec.constructorBuilder()
             .addParameter(
-                ParameterSpec.builder("activity", bindingActivity.typeElement.asClassName().copy(true), KModifier.PRIVATE)
+                ParameterSpec.builder("fragment", bindingFragment.typeElement.asClassName().copy(true), KModifier.PRIVATE)
                     .build()
             )
             .build()
 
-        val propertyActivity = PropertySpec.builder("activity", bindingActivity.typeElement.asClassName().copy(true), KModifier.PRIVATE)
-            .initializer("activity")
+        val propertyActivity = PropertySpec.builder("fragment", bindingFragment.typeElement.asClassName().copy(true), KModifier.PRIVATE)
+            .initializer("fragment")
             .mutable()
             .build()
 
-        val propertyDecor = PropertySpec.builder("decorView", elements.getTypeElement(VIEW_JVM_CLASS_NAME).asClassName().copy(true), KModifier.PRIVATE)
-            .initializer("activity!!.window.decorView")
+        val propertyDecor = PropertySpec.builder("view", ContextHolder.elements.getTypeElement(VIEW_JVM_CLASS_NAME).asClassName().copy(true), KModifier.PRIVATE)
+            .initializer("fragment!!.view")
             .mutable()
             .build()
 
@@ -56,7 +56,7 @@ class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
     }
 
     private fun buildBindViews(typeBuilder: TypeSpec.Builder) {
-        val properties = bindingActivity.bindingViews.map {
+        val properties = bindingFragment.bindingViews.map {
             if (it.isPrivate) {
                 Logger.error(it.symbol, "BindingView which annotated @BindView can not be private.")
                 return
@@ -67,7 +67,7 @@ class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
             val resId = it.symbol.getAnnotation(BindView::class.java).redId
 
             PropertySpec.builder(name, type, KModifier.PRIVATE)
-                .initializer("Utils.findRequiredViewAsType(decorView!!, $resId)")
+                .initializer("Utils.findRequiredViewAsType(view!!, $resId)")
                 .mutable()
                 .build()
         }
@@ -81,17 +81,17 @@ class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
     private fun buildBindFunction(typeBuilder: TypeSpec.Builder) {
         val bindFunBuilder = FunSpec.builder(BIND_METHOD_NAME)
             .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
-            .beginControlFlow("if (activity is %T)", bindingActivity.typeElement)
-            .returns(elements.getTypeElement(UNBINDER_JVM_CLASS_NAME).asClassName().copy(true))
+            .beginControlFlow("if (fragment is %T)", bindingFragment.typeElement)
+            .returns(ContextHolder.elements.getTypeElement(UNBINDER_JVM_CLASS_NAME).asClassName().copy(true))
 
-        bindingActivity.bindingViews.forEach {
+        bindingFragment.bindingViews.forEach {
             if (it.isPrivate) {
                 Logger.error(it.symbol, "BindingView which annotated @BindView can not be private.")
                 return@forEach
             }
 
             val name = it.name
-            bindFunBuilder.addStatement("activity?.$name = $name!!")
+            bindFunBuilder.addStatement("fragment?.$name = $name!!")
         }
         bindFunBuilder.addStatement("return this")
             .endControlFlow()
@@ -122,9 +122,9 @@ class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
      */
     private fun writeKotlinToFile(fileSpec: FileSpec) {
         try {
-            val file = filer.createResource(
+            val file = ContextHolder.filer.createResource(
                 StandardLocation.SOURCE_OUTPUT,
-                bindingActivity.packageName,
+                bindingFragment.packageName,
                 fileSpec.name + ".kt"
             )
             file.openWriter().also(fileSpec::writeTo).close()
