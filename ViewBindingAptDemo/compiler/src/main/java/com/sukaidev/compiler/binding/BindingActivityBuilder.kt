@@ -1,15 +1,8 @@
 package com.sukaidev.compiler.binding
 
 import com.squareup.kotlinpoet.*
-import com.squareup.kotlinpoet.jvm.jvmDefault
 import com.sukaidev.annotations.BindView
-import com.sukaidev.compiler.binding.const.Constant.BINDING_CLASS_POSTFIX
-import com.sukaidev.compiler.binding.const.Constant.BIND_METHOD_NAME
-import com.sukaidev.compiler.binding.const.Constant.UNBINDER_JVM_CLASS_NAME
-import com.sukaidev.compiler.binding.const.Constant.UNBIND_METHOD_NAME
-import com.sukaidev.compiler.binding.const.Constant.UTIL_CLASS_PACKAGE_NAME
-import com.sukaidev.compiler.binding.const.Constant.UTIL_CLASS_SIMPLE_NAME
-import com.sukaidev.compiler.binding.const.Constant.VIEW_JVM_CLASS_NAME
+import com.sukaidev.compiler.binding.const.*
 import com.sukaidev.compiler.util.ContextHolder.elements
 import com.sukaidev.compiler.util.ContextHolder.filer
 import com.sukaidev.compiler.util.Logger

@@ -2,7 +2,7 @@ package com.sukaidev.compiler.binding
 
 import com.squareup.kotlinpoet.*
 import com.sukaidev.annotations.BindView
-import com.sukaidev.compiler.binding.const.Constant
+import com.sukaidev.compiler.binding.const.*
 import com.sukaidev.compiler.util.ContextHolder
 import com.sukaidev.compiler.util.Logger
 import javax.tools.StandardLocation
@@ -17,17 +17,17 @@ class BindingFragmentBuilder(private val bindingFragment: BindingFragment) {
     fun build() {
         if (bindingFragment.isAbstract) return
 
-        val typeBuilder = TypeSpec.classBuilder(bindingFragment.simpleName + Constant.BINDING_CLASS_POSTFIX)
+        val typeBuilder = TypeSpec.classBuilder(bindingFragment.simpleName + BINDING_CLASS_POSTFIX)
             .addModifiers(KModifier.PUBLIC, KModifier.FINAL)
-            .addSuperinterface(ContextHolder.elements.getTypeElement(Constant.UNBINDER_JVM_CLASS_NAME).asClassName())
+            .addSuperinterface(ContextHolder.elements.getTypeElement(UNBINDER_JVM_CLASS_NAME).asClassName())
 
         buildConstructor(typeBuilder)
         buildBindViews(typeBuilder)
         buildBindFunction(typeBuilder)
         buildUnBindFunction(typeBuilder)
 
-        val fileBuilder = FileSpec.builder(bindingFragment.packageName, bindingFragment.simpleName + Constant.BINDING_CLASS_POSTFIX)
-            .addImport(Constant.UTIL_CLASS_PACKAGE_NAME, Constant.UTIL_CLASS_SIMPLE_NAME)
+        val fileBuilder = FileSpec.builder(bindingFragment.packageName, bindingFragment.simpleName + BINDING_CLASS_POSTFIX)
+            .addImport(UTIL_CLASS_PACKAGE_NAME, UTIL_CLASS_SIMPLE_NAME)
             .addType(typeBuilder.build())
 
         writeKotlinToFile(fileBuilder.build())
@@ -46,7 +46,7 @@ class BindingFragmentBuilder(private val bindingFragment: BindingFragment) {
             .mutable()
             .build()
 
-        val propertyDecor = PropertySpec.builder("view", ContextHolder.elements.getTypeElement(Constant.VIEW_JVM_CLASS_NAME).asClassName().copy(true), KModifier.PRIVATE)
+        val propertyDecor = PropertySpec.builder("view", ContextHolder.elements.getTypeElement(VIEW_JVM_CLASS_NAME).asClassName().copy(true), KModifier.PRIVATE)
             .initializer("fragment!!.view")
             .mutable()
             .build()
@@ -79,10 +79,10 @@ class BindingFragmentBuilder(private val bindingFragment: BindingFragment) {
      * 构造`bind`方法
      */
     private fun buildBindFunction(typeBuilder: TypeSpec.Builder) {
-        val bindFunBuilder = FunSpec.builder(Constant.BIND_METHOD_NAME)
+        val bindFunBuilder = FunSpec.builder(BIND_METHOD_NAME)
             .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
             .beginControlFlow("if (fragment is %T)", bindingFragment.typeElement)
-            .returns(ContextHolder.elements.getTypeElement(Constant.UNBINDER_JVM_CLASS_NAME).asClassName().copy(true))
+            .returns(ContextHolder.elements.getTypeElement(UNBINDER_JVM_CLASS_NAME).asClassName().copy(true))
 
         bindingFragment.bindingViews.forEach {
             if (it.isPrivate) {
@@ -104,7 +104,7 @@ class BindingFragmentBuilder(private val bindingFragment: BindingFragment) {
      * 构造`unBind`方法
      */
     private fun buildUnBindFunction(typeBuilder: TypeSpec.Builder) {
-        val unBindMethodBuilder = FunSpec.builder(Constant.UNBIND_METHOD_NAME)
+        val unBindMethodBuilder = FunSpec.builder(UNBIND_METHOD_NAME)
             .addModifiers(KModifier.OVERRIDE)
             .returns(UNIT)
 

@@ -1,14 +1,10 @@
 package com.sukaidev.compiler.binding.entity
 
-import com.squareup.javapoet.TypeName
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.sun.tools.javac.code.Symbol
 import javax.lang.model.type.ArrayType
 import javax.lang.model.type.TypeKind
-
-typealias JavaTypeName = TypeName
-typealias  KotlinTypeName = com.squareup.kotlinpoet.TypeName
 
 /**
  * Created by sukaidev on 2021/07/02.
@@ -28,9 +24,7 @@ open class BindingView(val symbol: Symbol.VarSymbol) : Comparable<BindingView> {
         return name.compareTo(other.name)
     }
 
-    fun asJavaTypeName(): JavaTypeName = TypeName.get(symbol.type)
-
-    open fun asKotlinTypeName(): KotlinTypeName = when (symbol.type.kind) {
+    open fun asKotlinTypeName(): TypeName = when (symbol.type.kind) {
         TypeKind.BOOLEAN -> BOOLEAN
         TypeKind.BYTE -> BYTE
         TypeKind.SHORT -> SHORT
@@ -39,7 +33,7 @@ open class BindingView(val symbol: Symbol.VarSymbol) : Comparable<BindingView> {
         TypeKind.CHAR -> CHAR
         TypeKind.FLOAT -> FLOAT
         TypeKind.DOUBLE -> DOUBLE
-        TypeKind.DECLARED -> if (toString() == "java.lang.String") STRING else symbol.type.asTypeName()
+        TypeKind.DECLARED -> if (toString() == "java.lAuang.String") STRING else symbol.type.asTypeName()
         TypeKind.ARRAY -> {
             val arrayType = this as ArrayType
             when (arrayType.componentType.kind) {
@@ -59,13 +53,4 @@ open class BindingView(val symbol: Symbol.VarSymbol) : Comparable<BindingView> {
     }
 }
 
-private val STRING: ClassName = ClassName("kotlin", "String")
-private val STRING_ARRAY = ClassName("kotlin", "Array").parameterizedBy(STRING)
-private val LONG_ARRAY: ClassName = ClassName("kotlin", "LongArray")
-private val INT_ARRAY: ClassName = ClassName("kotlin", "IntArray")
-private val SHORT_ARRAY: ClassName = ClassName("kotlin", "ShortArray")
-private val BYTE_ARRAY: ClassName = ClassName("kotlin", "ByteArray")
-private val CHAR_ARRAY: ClassName = ClassName("kotlin", "CharArray")
-private val BOOLEAN_ARRAY: ClassName = ClassName("kotlin", "BooleanArray")
-private val FLOAT_ARRAY: ClassName = ClassName("kotlin", "FloatArray")
-private val DOUBLE_ARRAY: ClassName = ClassName("kotlin", "DoubleArray")
+private val STRING_ARRAY = ClassName("kotlin", "Array").parameterizedBy(com.sukaidev.compiler.binding.const.STRING)
