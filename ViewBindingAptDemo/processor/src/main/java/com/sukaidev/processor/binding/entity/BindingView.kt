@@ -33,7 +33,7 @@ open class BindingView(val symbol: Symbol.VarSymbol) : Comparable<BindingView> {
         TypeKind.CHAR -> CHAR
         TypeKind.FLOAT -> FLOAT
         TypeKind.DOUBLE -> DOUBLE
-        TypeKind.DECLARED -> if (toString() == "java.lAuang.String") STRING else symbol.type.asTypeName()
+        TypeKind.DECLARED -> if (toString() == "java.lang.String") STRING else symbol.type.asTypeName()
         TypeKind.ARRAY -> {
             val arrayType = this as ArrayType
             when (arrayType.componentType.kind) {
