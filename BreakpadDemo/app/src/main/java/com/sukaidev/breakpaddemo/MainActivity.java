@@ -1,11 +1,11 @@
-package com.sukaidev.breadpaddemo;
+package com.sukaidev.breakpaddemo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.sukaidev.breadpaddemo.databinding.ActivityMainBinding;
+import com.sukaidev.breakpaddemo.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 

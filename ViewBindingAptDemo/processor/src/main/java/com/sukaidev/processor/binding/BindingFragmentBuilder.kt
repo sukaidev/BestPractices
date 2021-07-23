@@ -13,7 +13,6 @@ import javax.tools.StandardLocation
  */
 class BindingFragmentBuilder(private val bindingFragment: BindingFragment) {
 
-
     fun build() {
         if (bindingFragment.isAbstract) return
 
@@ -80,7 +79,7 @@ class BindingFragmentBuilder(private val bindingFragment: BindingFragment) {
      */
     private fun buildBindFunction(typeBuilder: TypeSpec.Builder) {
         val bindFunBuilder = FunSpec.builder(BIND_METHOD_NAME)
-            .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
+            .addModifiers(KModifier.OVERRIDE)
             .beginControlFlow("if (fragment is %T)", bindingFragment.typeElement)
             .returns(ContextHolder.elements.getTypeElement(UNBINDER_JVM_CLASS_NAME).asClassName().copy(true))
 

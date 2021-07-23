@@ -91,6 +91,8 @@ class ViewBindingProcessor : AbstractProcessor() {
                     Logger.logParsingError(it, BindView::class.java, e)
                 }
             }
+
+        // 第三步，为Activity/Fragment生成对应ViewBinding类
         bindingActivities.values.forEach {
             it.builder.build()
         }

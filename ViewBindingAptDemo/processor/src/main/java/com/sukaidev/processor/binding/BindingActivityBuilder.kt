@@ -80,7 +80,7 @@ class BindingActivityBuilder(private val bindingActivity: BindingActivity) {
      */
     private fun buildBindFunction(typeBuilder: TypeSpec.Builder) {
         val bindFunBuilder = FunSpec.builder(BIND_METHOD_NAME)
-            .addModifiers(KModifier.PUBLIC, KModifier.OVERRIDE)
+            .addModifiers(KModifier.OVERRIDE)
             .beginControlFlow("if (activity is %T)", bindingActivity.typeElement)
             .returns(elements.getTypeElement(UNBINDER_JVM_CLASS_NAME).asClassName().copy(true))
 

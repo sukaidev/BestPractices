@@ -19,6 +19,11 @@ class ViewBinding {
         app.registerActivityLifecycleCallbacks(activityLifecycleCallback)
     }
 
+    /**
+     * 进行视图绑定
+     * 需要在Activity setContentView之后
+     * 以及Fragment onCreatedView之后调用
+     */
     fun bind(source: Any) {
         if (source !is Activity && source !is Fragment) return
 
@@ -43,6 +48,10 @@ class ViewBinding {
     }
 
 
+    /**
+     * 解绑
+     * 由LifecycleCallback自动调用
+     */
     fun unBind(source: Any) {
         if (source !is Activity && source !is Fragment) return
 
