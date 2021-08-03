@@ -1,2 +1,3 @@
 rootProject.name = "JVMTISample"
 include ':app'
+include ':lib'

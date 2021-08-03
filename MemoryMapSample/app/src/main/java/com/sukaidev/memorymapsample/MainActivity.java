@@ -1,17 +1,12 @@
-package com.sukaidev.jvmtisample;
+package com.sukaidev.memorymapsample;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.sukaidev.jvmtisample.databinding.ActivityMainBinding;
+import com.sukaidev.memorymapsample.databinding.ActivityMainBinding;
 
-/**
- * Created by sukaidev on 2021/07/25.
- *
- * @author sukaidev
- */
 public class MainActivity extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
@@ -28,7 +23,9 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.sampleText.setText(stringFromJNI());
+        // Example of a call to a native method
+        TextView tv = binding.sampleText;
+        tv.setText(stringFromJNI());
     }
 
     /**

@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.10.2)
 
 # Declares and names the project.
 
-project("jvmtisample")
+project("memorymapsample")
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
