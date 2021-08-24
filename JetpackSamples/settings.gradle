@@ -8,3 +8,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "JetpackSamples"
 include ':app'
+include ':nav-compiler'
+include ':nav-annotation'
