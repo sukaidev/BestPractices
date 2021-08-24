@@ -1,4 +1,4 @@
-package com.sukaidev.processor.util
+package com.sukaidev.compiler
 
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -18,7 +18,7 @@ object Logger {
     private lateinit var messager: Messager
 
     fun init(messager: Messager) {
-        this.messager = messager
+        Logger.messager = messager
     }
 
     fun warn(element: Element, message: String, vararg args: Any) {

@@ -1,5 +1,6 @@
-package com.sukaidev.processor.util
+package com.sukaidev.compiler
 
+import com.google.gson.Gson
 import javax.annotation.processing.Filer
 import javax.annotation.processing.Messager
 import javax.annotation.processing.ProcessingEnvironment
@@ -19,6 +20,8 @@ object ContextHolder {
     lateinit var elements: Elements
     lateinit var messager: Messager
     lateinit var filer: Filer
+
+    val gson = Gson()
 
     fun init(env: ProcessingEnvironment) {
         elements = env.elementUtils
