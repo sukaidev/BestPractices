@@ -68,26 +68,22 @@ class NavProcessor : AbstractProcessor() {
         val path = destination.path
         val asStarter = destination.asStarter
 
-        try {
-            when {
-                element.asType().isSubType(activityType, types) -> {
-                    if (resultMap.containsKey(path)) {
-                        Logger.error(element, "Different page can't have same path.")
-                        return
-                    }
-                    resultMap[path] = DestinationNode(id, path, "Activity", asStarter, clazzName)
-                }
-                element.asType().isSubType(fragmentType, types) -> {
-                    resultMap[path] = DestinationNode(id, path, "Fragment", asStarter, clazzName)
+        if (resultMap.containsKey(path)) {
+            Logger.error(element, "Different pages cannot have the same path.")
+            return
+        }
 
-                }
-                element.asType().isSubType(dialogType, types) -> {
-                    resultMap[path] = DestinationNode(id, path, "Dialog", asStarter, clazzName)
-                }
+        try {
+            val type = when {
+                element.asType().isSubType(activityType, types) -> "Activity"
+                element.asType().isSubType(fragmentType, types) -> "Fragment"
+                element.asType().isSubType(dialogType, types) -> "Dialog"
                 else -> {
                     Logger.error(element, "Unsupported typeElement:${element.simpleName}")
+                    return
                 }
             }
+            resultMap[path] = DestinationNode(id, path, type, asStarter, clazzName)
         } catch (e: Exception) {
             Logger.logParsingError(element, Destination::class.java, e)
         }

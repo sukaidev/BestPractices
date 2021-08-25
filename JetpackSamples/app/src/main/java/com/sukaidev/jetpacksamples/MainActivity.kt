@@ -3,14 +3,16 @@ package com.sukaidev.jetpacksamples
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.sukaidev.annotation.Destination
 import com.sukaidev.jetpacksamples.base.BaseActivity
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.sukaidev.jetpacksamples.databinding.ActivityMainBinding
+import com.sukaidev.runtime.Router
 
+@Destination(Router.HOME_MAIN_PAGE)
 class MainActivity : BaseActivity<ActivityMainBinding>() {
-
 
     override fun onBindView(savedInstanceState: Bundle?) {
         val navView: BottomNavigationView = binding.navView

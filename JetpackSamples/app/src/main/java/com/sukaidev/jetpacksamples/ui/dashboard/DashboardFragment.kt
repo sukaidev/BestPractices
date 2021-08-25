@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.sukaidev.annotation.Destination
 import com.sukaidev.jetpacksamples.base.BaseFragment
 import com.sukaidev.jetpacksamples.databinding.FragmentDashboardBinding
-import com.sukaidev.jetpacksamples.navigation.Navigation
+import com.sukaidev.runtime.Router
 
-@Destination(Navigation.HOME_TAB_DASHBOARD)
+@Destination(Router.HOME_TAB_DASHBOARD)
 class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
 
     private lateinit var dashboardViewModel: DashboardViewModel

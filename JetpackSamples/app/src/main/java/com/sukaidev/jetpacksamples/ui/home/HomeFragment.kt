@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.sukaidev.annotation.Destination
 import com.sukaidev.jetpacksamples.base.BaseFragment
 import com.sukaidev.jetpacksamples.databinding.FragmentHomeBinding
-import com.sukaidev.jetpacksamples.navigation.Navigation
+import com.sukaidev.runtime.Router
 
-@Destination(Navigation.HOME_TAB_MAIN, true)
+@Destination(Router.HOME_TAB_MAIN, true)
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private lateinit var homeViewModel: HomeViewModel
