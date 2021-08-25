@@ -17,15 +17,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun onBindView(savedInstanceState: Bundle?) {
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-
+        val navController = Router.buildNavGraph(this, R.id.nav_host_fragment_activity_main)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+
+        Router.buildBottomNavView(navView)
+
+        navView.setOnNavigationItemSelectedListener { item ->
+            navController.navigate(item.itemId)
+            true
+        }
     }
 
 }
