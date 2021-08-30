@@ -1,13 +1,11 @@
 package com.sukaidev.jetpacksamples
 
 import android.os.Bundle
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sukaidev.annotation.Destination
-import com.sukaidev.jetpacksamples.base.BaseActivity
+import com.sukaidev.core.base.BaseActivity
 import com.sukaidev.jetpacksamples.databinding.ActivityMainBinding
 import com.sukaidev.runtime.Router
 

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.sukaidev.annotation.Destination
-import com.sukaidev.jetpacksamples.base.BaseFragment
+import com.sukaidev.core.base.BaseFragment
 import com.sukaidev.jetpacksamples.databinding.FragmentHomeBinding
 import com.sukaidev.runtime.Router
 

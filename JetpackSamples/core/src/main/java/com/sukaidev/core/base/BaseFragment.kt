@@ -1,4 +1,4 @@
-package com.sukaidev.jetpacksamples.base
+package com.sukaidev.core.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
