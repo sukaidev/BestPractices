@@ -27,7 +27,7 @@ class Restful constructor(private val baseUrl: String, callFactory: RestCall.Fac
             service.classLoader,
             arrayOf<Class<*>>(service)
         ) { proxy, method, args ->
-            var methodParser: RequestBuilder? = methodService.get(method)
+            var methodParser: RequestBuilder? = methodService[method]
             if (methodParser == null) {
                 methodParser = RequestBuilder.parse(baseUrl, method, args)
                 methodService[method] = methodParser

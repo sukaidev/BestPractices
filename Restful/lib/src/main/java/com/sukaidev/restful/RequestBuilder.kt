@@ -19,9 +19,10 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
     private var host: String? = null
     private var httpMethod: Int = 0
     private var returnType: Type? = null
+    private var formPost: Boolean = true
     private var relativeUrl: String? = null
     private var headers = HashMap<String, String>()
-    private var parameters = HashMap<String, Any>()
+    private var parameters = HashMap<String, String>()
 
     init {
         parseMethodAnnotations(method)
@@ -93,7 +94,7 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
                 is Field -> {
                     val k = annotation.value
                     val v = args[index]
-                    parameters[k] = value
+                    parameters[k] = value.toString()
                 }
                 is Path -> {
                     val replaceName = annotation.value
@@ -149,6 +150,7 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
         request.httpMethod = httpMethod
         request.returnType = returnType
         request.relativeUrl = relativeUrl
+        request.formPost = formPost
         return request
     }
 
