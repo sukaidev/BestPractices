@@ -63,10 +63,9 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
                 else ->
                     throw IllegalStateException("cannot handle method annotation : ${annotation.javaClass.name}")
             }
-
-            require(!(httpMethod != RestRequest.METHOD.GET && httpMethod != RestRequest.METHOD.POST)) {
-                "method ${method.name} should annotated with GET or POST."
-            }
+        }
+        require(httpMethod == RestRequest.METHOD.GET || httpMethod == RestRequest.METHOD.POST) {
+            "method ${method.name} should annotated with GET or POST."
         }
         if (host == null) host = baseUrl
     }
@@ -127,7 +126,7 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
      * 解析返回值类型
      */
     private fun parseMethodReturnType(method: Method) {
-        if (method.returnType != RestCall::class)
+        if (method.returnType != RestCall::class.java)
             throw IllegalStateException("method ${method.name} must be type of ${RestCall::class.qualifiedName}")
         val genericReturnType = method.genericReturnType
         if (genericReturnType is ParameterizedType) {
