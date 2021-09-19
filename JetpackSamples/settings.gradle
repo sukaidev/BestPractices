@@ -3,7 +3,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
+        maven {
+            allowInsecureProtocol = true
+            url "http://localhost:8081/repository/maven-releases/"
+        }
     }
 }
 rootProject.name = "JetpackSamples"
@@ -12,3 +15,4 @@ include ':nav-compiler'
 include ':nav-annotation'
 include ':nav-core'
 include ':core'
+include ':net'
