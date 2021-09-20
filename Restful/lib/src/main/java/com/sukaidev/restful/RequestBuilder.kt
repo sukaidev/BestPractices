@@ -24,6 +24,8 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
     private var headers = HashMap<String, String>()
     private var parameters = HashMap<String, String>()
 
+    private var cacheStrategy = CacheStrategy.NET_ONLY
+
     init {
         parseMethodAnnotations(method)
         parseMethodParameter(method, args)
@@ -59,6 +61,9 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
                 }
                 is BaseUrl -> {
                     host = annotation.value
+                }
+                is CacheStrategy -> {
+                    cacheStrategy = annotation.value
                 }
                 else ->
                     throw IllegalStateException("cannot handle method annotation : ${annotation.javaClass.name}")
@@ -99,6 +104,9 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
                     val replaceValue = value.toString()
                     val newRelativeUrl = relativeUrl?.replace("{$replaceName}", replaceValue)
                     relativeUrl = newRelativeUrl
+                }
+                is CacheStrategy -> {
+                    cacheStrategy = value as Int
                 }
                 else -> {
                     throw IllegalStateException("cannot handle method parameter annotation : ${annotation.javaClass.name}")
@@ -149,6 +157,7 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
         request.returnType = returnType
         request.relativeUrl = relativeUrl
         request.formPost = formPost
+        request.cacheStrategy = cacheStrategy
         return request
     }
 

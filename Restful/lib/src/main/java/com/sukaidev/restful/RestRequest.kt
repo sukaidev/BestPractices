@@ -1,7 +1,9 @@
 package com.sukaidev.restful
 
 import androidx.annotation.IntDef
+import com.sukaidev.restful.annotation.CacheStrategy
 import java.lang.reflect.Type
+import java.net.URLEncoder
 
 /**
  * Created by sukaidev on 2021/09/05.
@@ -27,6 +29,10 @@ open class RestRequest {
 
     var formPost: Boolean = true
 
+    var cacheStrategyKey: String = ""
+
+    var cacheStrategy: Int = CacheStrategy.NET_ONLY
+
     fun endPointUrl(): String {
         if (relativeUrl == null) throw  IllegalStateException("relative url must not be null.")
         if (!relativeUrl!!.startsWith("/")) {
@@ -41,6 +47,38 @@ open class RestRequest {
             headers = mutableMapOf()
         }
         headers!![name] = value
+    }
+
+    /**
+     * 根据请求的url和参数构建CacheKey供外部使用
+     */
+    fun getCacheKey(): String {
+        if (cacheStrategyKey.isNotEmpty()) {
+            return cacheStrategyKey
+        }
+        val sb = StringBuilder()
+        val endUrl = endPointUrl()
+        sb.append(endUrl)
+        if (endUrl.indexOf("?") > 0 || endUrl.indexOf("&") > 0) {
+            sb.append("&")
+        } else {
+            sb.append("?")
+        }
+
+        cacheStrategyKey = if (parameters != null) {
+            for ((key, value) in parameters!!) {
+                try {
+                    val encodeValue = URLEncoder.encode(value, "UTF-8")
+                    sb.append(key).append("=").append(encodeValue).append("&")
+                } catch (e: Exception) {
+                }
+            }
+            sb.deleteCharAt(sb.length - 1)
+            sb.toString()
+        } else {
+            endUrl
+        }
+        return cacheStrategyKey
     }
 
     @IntDef(value = [METHOD.GET, METHOD.POST])
