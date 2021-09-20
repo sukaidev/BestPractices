@@ -7,9 +7,9 @@ import com.sukaidev.restful.Restful
  * @author sukaidev
  * @since 2021/09/20
  */
-object ApiFactory {
+object RestHttp {
 
-    private val baseUrl = "https://xxx"
+    private val baseUrl = "https://www.wanandroid.com"
     private val restful = Restful(baseUrl, RetrofitCallFactory(baseUrl))
 
     private val services = HashMap<Class<*>, Any>()

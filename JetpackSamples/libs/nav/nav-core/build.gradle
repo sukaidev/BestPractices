@@ -45,5 +45,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.8'
 
     implementation 'androidx.startup:startup-runtime:1.1.0'
-    api project(":nav-annotation")
+    api project(":libs:nav:nav-annotation")
 }

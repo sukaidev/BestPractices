@@ -11,8 +11,8 @@ dependencyResolutionManagement {
 }
 rootProject.name = "JetpackSamples"
 include ':app'
-include ':nav-compiler'
-include ':nav-annotation'
-include ':nav-core'
-include ':core'
-include ':net'
+include ':libs:nav:nav-compiler'
+include ':libs:nav:nav-annotation'
+include ':libs:nav:nav-core'
+include ':libs:core'
+include ':libs:net'
