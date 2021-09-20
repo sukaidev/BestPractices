@@ -1,19 +1,22 @@
 package com.sukaidev.net
 
+import android.util.Log
+import com.sukaidev.core.cache.CacheManager
+import com.sukaidev.core.executor.AppExecutor
 import com.sukaidev.restful.RestCall
 import com.sukaidev.restful.RestCallback
 import com.sukaidev.restful.RestRequest
 import com.sukaidev.restful.RestResponse
-import okhttp3.FormBody
-import okhttp3.MediaType
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
+import com.sukaidev.restful.annotation.CacheStrategy
+import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.*
+import java.util.concurrent.TimeUnit
 
 /**
  * 为RestCall适配Retrofit
@@ -26,8 +29,17 @@ class RetrofitCallFactory(baseUrl: String) : RestCall.Factory {
     private var apiService: ApiService
 
     init {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor())
+            .dispatcher(Dispatcher(AppExecutor.getGlobalExecutor()))
+            .connectTimeout(1000L, TimeUnit.MILLISECONDS)
+            .readTimeout(1000L, TimeUnit.MILLISECONDS)
+            .writeTimeout(1000L, TimeUnit.MILLISECONDS)
+            .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
+            .client(client)
             .build()
         apiService = retrofit.create(ApiService::class.java)
 
@@ -41,13 +53,24 @@ class RetrofitCallFactory(baseUrl: String) : RestCall.Factory {
     internal inner class RetrofitCall<T>(private val request: RestRequest) : RestCall<T> {
 
         override fun enqueue(callback: RestCallback<T>) {
+            if (request.cacheStrategy == CacheStrategy.CACHE_FIRST) {
+                AppExecutor.execute {
+                    val cacheResponse = readCache()
+                    if (cacheResponse.data != null) {
+                        AppExecutor.postAtFrontOfMainThread { callback.onSuccess(cacheResponse) }
+                        Log.d("RetrofitCall","从缓存中获取数据...")
+                    }
+                }
+            }
             val realCall = createRealCall(request)
             realCall.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
-                    callback.onSuccess(parseResponse(response))
+                    val resp = parseResponse(response)
+                    saveCacheIfNeeded(resp)
+                    callback.onSuccess(resp)
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -61,6 +84,26 @@ class RetrofitCallFactory(baseUrl: String) : RestCall.Factory {
             val realCall = createRealCall(request)
             val response = realCall.execute()
             return parseResponse(response)
+        }
+
+        private fun readCache(): RestResponse<T> {
+            val cacheKey = request.getCacheKey()
+            val cache = CacheManager.getCache<T>(cacheKey)
+            val cachedResponse = RestResponse<T>()
+            cachedResponse.data = cache
+            cachedResponse.code = RestResponse.SUCCESS
+            cachedResponse.msg = "缓存获取成功"
+            return cachedResponse
+        }
+
+        private fun saveCacheIfNeeded(response: RestResponse<T>) {
+            if (request.cacheStrategy != CacheStrategy.NET_ONLY) {
+                if (response.data != null) {
+                    AppExecutor.execute {
+                        CacheManager.saveCache(request.getCacheKey(), response.data)
+                    }
+                }
+            }
         }
 
         private fun parseResponse(response: Response<ResponseBody>): RestResponse<T> {

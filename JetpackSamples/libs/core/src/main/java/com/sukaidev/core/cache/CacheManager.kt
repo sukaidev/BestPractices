@@ -1,5 +1,6 @@
 package com.sukaidev.core.cache
 
+import android.annotation.SuppressLint
 import android.content.Context
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -11,14 +12,21 @@ import java.io.ObjectOutputStream
  * @author sukaidev
  * @since 2021/09/19
  */
+@SuppressLint("StaticFieldLeak")
 object CacheManager {
+
+    private lateinit var context: Context
+
+    fun init(context: Context) {
+        this.context = context.applicationContext
+    }
 
     /**
      * 添加缓存
      * @param key 缓存的唯一标识，例如网络请求URL
      * @param body 缓存内容，例如网络请求的ResponseBody
      */
-    fun <T> saveCache(context: Context, key: String, body: T) {
+    fun <T> saveCache(key: String, body: T) {
         val cache = Cache()
         cache.key = key
         cache.data = toByteArray(body)
@@ -29,16 +37,16 @@ object CacheManager {
      * 获取缓存
      * @param key 缓存的唯一标识，例如网络请求URL
      */
-    fun <T> getCache(context: Context, key: String): T? {
+    fun <T> getCache(key: String): T? {
         val cache = CacheDatabase.get(context).cacheDao.getCache(key)
-        return (if (cache?.data != null) toObject(cache?.data) else null) as? T
+        return (if (cache?.data != null) toObject(cache.data) else null) as? T
     }
 
     /**
      * 删除缓存
      * @param key 缓存的唯一标识，例如网络请求URL
      */
-    fun deleteCache(context: Context, key: String) {
+    fun deleteCache(key: String) {
         val cache = Cache()
         cache.key = key
         CacheDatabase.get(context).cacheDao.deleteCache(cache)

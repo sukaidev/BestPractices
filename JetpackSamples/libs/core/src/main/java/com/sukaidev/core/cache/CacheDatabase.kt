@@ -12,7 +12,7 @@ import androidx.room.RoomDatabase
  * @author sukaidev
  * @since 2021/09/19
  */
-@Database(entities = [CacheDatabase::class], version = 1)
+@Database(entities = [Cache::class], version = 1)
 abstract class CacheDatabase : RoomDatabase() {
 
     abstract val cacheDao: CacheDao
@@ -21,7 +21,7 @@ abstract class CacheDatabase : RoomDatabase() {
         private var INSTANCE: CacheDatabase? = null
 
         fun get(context: Context) = INSTANCE ?: synchronized(this) {
-            if (INSTANCE != null) {
+            if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(
                     context.applicationContext,
                     CacheDatabase::class.java,

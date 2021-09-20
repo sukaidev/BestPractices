@@ -1,12 +1,16 @@
 package com.sukaidev.jetpacksamples
 
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sukaidev.annotation.Destination
 import com.sukaidev.core.base.BaseActivity
 import com.sukaidev.jetpacksamples.databinding.ActivityMainBinding
+import com.sukaidev.net.RestClient
+import com.sukaidev.restful.RestCallback
+import com.sukaidev.restful.RestResponse
 import com.sukaidev.runtime.Router
 
 @Destination(Router.HOME_MAIN_PAGE)
@@ -29,6 +33,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             navController.navigate(item.itemId)
             true
         }
-    }
+        val api = RestClient.create(TestApi::class.java)
+        api.getWanAndroidHomePage(0).enqueue(object : RestCallback<Any> {
+            override fun onFailed(throwable: Throwable) {
 
+            }
+
+            override fun onSuccess(response: RestResponse<Any>) {
+                Log.d("MainActivity", response.data.toString())
+            }
+        })
+    }
 }
