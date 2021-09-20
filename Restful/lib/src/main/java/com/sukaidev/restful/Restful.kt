@@ -29,7 +29,7 @@ class Restful constructor(private val baseUrl: String, callFactory: RestCall.Fac
         ) { proxy, method, args ->
             var methodParser: RequestBuilder? = methodService[method]
             if (methodParser == null) {
-                methodParser = RequestBuilder.parse(baseUrl, method, args)
+                methodParser = RequestBuilder.parse(baseUrl, method, args ?: arrayOf())
                 methodService[method] = methodParser
             }
             scheduler.newCall(methodParser.build())

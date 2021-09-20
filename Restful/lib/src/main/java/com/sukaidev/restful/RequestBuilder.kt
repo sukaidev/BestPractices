@@ -80,7 +80,6 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
             "method ${method.name}'s arguments annotation count dose not match expect."
         }
 
-
         for (index in args.indices) {
             val annotations = parameterAnnotations[index]
             require(annotations.size <= 1) {
