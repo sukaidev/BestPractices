@@ -32,9 +32,9 @@ class RetrofitCallFactory(baseUrl: String) : RestCall.Factory {
         val client = OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor())
             .dispatcher(Dispatcher(AppExecutor.getGlobalExecutor()))
-            .connectTimeout(1000L, TimeUnit.MILLISECONDS)
-            .readTimeout(1000L, TimeUnit.MILLISECONDS)
-            .writeTimeout(1000L, TimeUnit.MILLISECONDS)
+            .connectTimeout(10L, TimeUnit.SECONDS)
+            .readTimeout(10L, TimeUnit.SECONDS)
+            .writeTimeout(10L, TimeUnit.SECONDS)
             .build()
 
         val retrofit = Retrofit.Builder()

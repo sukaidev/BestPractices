@@ -3,6 +3,7 @@ package com.sukaidev.core.executor
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import kotlinx.coroutines.asCoroutineDispatcher
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -42,6 +43,8 @@ object AppExecutor {
             }, { r, executor ->
                 Log.e(TAG, "$TAG RejectedExecution, $r, ${executor.taskCount}")
             })
+
+    val coroutineDispatcher = executor.asCoroutineDispatcher()
 
     fun execute(runnable: Runnable) {
         executor.execute(runnable)

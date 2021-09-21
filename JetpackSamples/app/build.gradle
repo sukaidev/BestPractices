@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -50,6 +51,9 @@ dependencies {
 
     implementation project(':libs:nav:nav-core')
     kapt project(":libs:nav:nav-compiler")
+
+    implementation 'com.google.dagger:hilt-android:2.38.1'
+    kapt 'com.google.dagger:hilt-android-compiler:2.38.1'
 
     implementation project(":libs:net")
 }
