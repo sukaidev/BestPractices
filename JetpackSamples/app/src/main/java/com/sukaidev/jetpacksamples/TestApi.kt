@@ -4,7 +4,6 @@ import com.sukaidev.restful.RestCall
 import com.sukaidev.restful.annotation.CacheStrategy
 import com.sukaidev.restful.annotation.GET
 import com.sukaidev.restful.annotation.Path
-import javax.inject.Inject
 
 /**
  *
