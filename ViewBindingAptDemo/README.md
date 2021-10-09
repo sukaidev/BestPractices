@@ -2,4 +2,4 @@
 **ViewBindingAptDemo**是一个模仿ButterKnife使用KAPT实现Activity与Fragment视图绑定功能的Demo.
 
 # Attention
-由于需要传入布局ID，因此目前Android中并不建议使用注解处理器的形式实现视图绑定，即使Jake Wharton也已经放弃维护ButterKnife，因此不建议再去造APT视图绑定轮子，拥抱ViewBinding或者使用Jetpack Compose才是趋势。
+由于需要传入布局ID，因此目前Android中并不建议使用注解处理器的形式实现视图绑定，即便Jake Wharton也已经放弃维护ButterKnife，因此不建议再去造APT视图绑定轮子，拥抱ViewBinding或者使用Jetpack Compose才是趋势。
