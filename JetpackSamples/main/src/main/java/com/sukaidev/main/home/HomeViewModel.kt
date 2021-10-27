@@ -1,4 +1,4 @@
-package com.sukaidev.jetpacksamples.ui.home
+package com.sukaidev.main.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

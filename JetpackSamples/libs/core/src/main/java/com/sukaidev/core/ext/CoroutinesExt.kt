@@ -1,4 +1,4 @@
-package com.sukaidev.core.coroutines
+package com.sukaidev.core.ext
 
 import com.sukaidev.core.executor.AppExecutor
 import kotlinx.coroutines.*

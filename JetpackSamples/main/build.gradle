@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
@@ -13,7 +13,6 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.sukaidev.jetpacksamples"
         minSdk 21
         targetSdk 30
         versionCode 1
@@ -55,5 +54,4 @@ dependencies {
     kapt 'com.google.dagger:hilt-android-compiler:2.38.1'
 
     implementation project(":libs:net")
-    implementation project(":main")
 }

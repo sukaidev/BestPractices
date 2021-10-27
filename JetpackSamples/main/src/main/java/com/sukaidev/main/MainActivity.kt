@@ -1,4 +1,4 @@
-package com.sukaidev.jetpacksamples
+package com.sukaidev.main
 
 import android.os.Bundle
 import android.util.Log
@@ -7,7 +7,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sukaidev.annotation.Destination
 import com.sukaidev.core.base.BaseActivity
-import com.sukaidev.jetpacksamples.databinding.ActivityMainBinding
+import com.sukaidev.main.databinding.ActivityMainBinding
 import com.sukaidev.restful.RestCallback
 import com.sukaidev.restful.RestResponse
 import com.sukaidev.runtime.Router

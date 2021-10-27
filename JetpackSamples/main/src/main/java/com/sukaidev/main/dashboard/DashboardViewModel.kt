@@ -1,4 +1,4 @@
-package com.sukaidev.jetpacksamples.ui.dashboard
+package com.sukaidev.main.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

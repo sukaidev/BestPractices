@@ -9,6 +9,7 @@ import com.sukaidev.restful.RestRequest
 import com.sukaidev.restful.RestResponse
 import com.sukaidev.restful.annotation.CacheStrategy
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Call
@@ -145,7 +146,7 @@ class RetrofitCallFactory(baseUrl: String) : RestCall.Factory {
                     builder.build()
                 } else {
                     RequestBody.create(
-                        MediaType.parse("application/json;utf-8"),
+                        "application/json;utf-8".toMediaTypeOrNull(),
                         jsonObject.toString()
                     )
                 }

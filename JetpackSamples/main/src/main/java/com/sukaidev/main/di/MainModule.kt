@@ -1,6 +1,6 @@
-package com.sukaidev.jetpacksamples.di
+package com.sukaidev.main.di
 
-import com.sukaidev.jetpacksamples.TestApi
+import com.sukaidev.main.TestApi
 import com.sukaidev.net.RestClient
 import dagger.Module
 import dagger.Provides
@@ -9,13 +9,13 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.scopes.ActivityRetainedScoped
 
 /**
- *
+ * 首页需注入依赖模块.
  * @author sukaidev
- * @since 2021/09/21
+ * @since 2021/10/27
  */
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-class AppModule {
+class MainModule {
 
     @Provides
     @ActivityRetainedScoped

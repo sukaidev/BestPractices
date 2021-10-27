@@ -1,11 +1,12 @@
-package com.sukaidev.jetpacksamples.ui.notifications
+package com.sukaidev.main.notifications
 
 import android.os.Bundle
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.sukaidev.annotation.Destination
 import com.sukaidev.core.base.BaseFragment
-import com.sukaidev.jetpacksamples.databinding.FragmentNotificationsBinding
+import com.sukaidev.main.databinding.FragmentNotificationsBinding
+import com.sukaidev.main.notifications.NotificationsViewModel
 import com.sukaidev.runtime.Router
 
 @Destination(Router.HOME_TAB_NOTIFICATIONS)

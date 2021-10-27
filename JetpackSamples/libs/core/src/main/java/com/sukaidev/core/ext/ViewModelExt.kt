@@ -1,4 +1,4 @@
-package com.sukaidev.core.coroutines
+package com.sukaidev.core.ext
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,7 +6,6 @@ import com.sukaidev.core.executor.AppExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * @author sukaidev

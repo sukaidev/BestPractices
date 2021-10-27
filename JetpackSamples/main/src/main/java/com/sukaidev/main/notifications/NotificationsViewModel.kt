@@ -1,4 +1,4 @@
-package com.sukaidev.jetpacksamples.ui.notifications
+package com.sukaidev.main.notifications
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

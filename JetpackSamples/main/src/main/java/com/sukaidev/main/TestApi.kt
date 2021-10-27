@@ -1,4 +1,4 @@
-package com.sukaidev.jetpacksamples
+package com.sukaidev.main
 
 import com.sukaidev.restful.RestCall
 import com.sukaidev.restful.annotation.CacheStrategy

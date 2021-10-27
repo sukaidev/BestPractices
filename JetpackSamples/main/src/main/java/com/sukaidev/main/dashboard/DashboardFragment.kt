@@ -1,11 +1,11 @@
-package com.sukaidev.jetpacksamples.ui.dashboard
+package com.sukaidev.main.dashboard
 
 import android.os.Bundle
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.sukaidev.annotation.Destination
 import com.sukaidev.core.base.BaseFragment
-import com.sukaidev.jetpacksamples.databinding.FragmentDashboardBinding
+import com.sukaidev.main.databinding.FragmentDashboardBinding
 import com.sukaidev.runtime.Router
 
 @Destination(Router.HOME_TAB_DASHBOARD)
