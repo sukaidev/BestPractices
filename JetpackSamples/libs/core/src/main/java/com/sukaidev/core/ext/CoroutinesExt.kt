@@ -1,5 +1,7 @@
 package com.sukaidev.core.ext
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.sukaidev.core.executor.AppExecutor
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext

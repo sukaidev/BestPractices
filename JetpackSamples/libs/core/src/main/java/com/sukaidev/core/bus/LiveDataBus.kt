@@ -26,5 +26,4 @@ object LiveDataBus {
     fun remove(eventName: String) {
         eventMap.remove(eventName)
     }
-
 }
