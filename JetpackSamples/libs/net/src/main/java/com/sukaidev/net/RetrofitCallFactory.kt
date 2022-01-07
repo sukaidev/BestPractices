@@ -54,12 +54,14 @@ class RetrofitCallFactory(baseUrl: String) : RestCall.Factory {
     internal inner class RetrofitCall<T>(private val request: RestRequest) : RestCall<T> {
 
         override fun enqueue(callback: RestCallback<T>) {
+            var callbackInvoked = false
             if (request.cacheStrategy == CacheStrategy.CACHE_FIRST) {
                 AppExecutor.execute {
                     val cacheResponse = readCache()
-                    if (cacheResponse.data != null) {
+                    if (cacheResponse.data != null && !callbackInvoked) {
+                        callbackInvoked = true
                         AppExecutor.postAtFrontOfMainThread { callback.onSuccess(cacheResponse) }
-                        Log.d("RetrofitCall","从缓存中获取数据...")
+                        Log.d("RetrofitCall", "从缓存中获取数据...")
                     }
                 }
             }
@@ -71,7 +73,10 @@ class RetrofitCallFactory(baseUrl: String) : RestCall.Factory {
                 ) {
                     val resp = parseResponse(response)
                     saveCacheIfNeeded(resp)
-                    callback.onSuccess(resp)
+                    if (!callbackInvoked) {
+                        callbackInvoked = true
+                        callback.onSuccess(resp)
+                    }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

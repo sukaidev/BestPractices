@@ -14,5 +14,11 @@ import kotlin.coroutines.CoroutineContext
 fun ViewModel.launch(
     context: CoroutineContext = AppExecutor.coroutineDispatcher,
     start: CoroutineStart = CoroutineStart.DEFAULT,
-    block: suspend CoroutineScope.() -> Unit
-) = viewModelScope.launchWithCatch(context, start, block)
+    block: suspend CoroutineScope.() -> Unit,
+    catcher: (throwable: Throwable) -> Unit
+) = viewModelScope.launchWithCatch(context, start, block).catch(catcher)
+
+fun ViewModel.launchDefault(
+    block: suspend CoroutineScope.() -> Unit,
+    catcher: (throwable: Throwable) -> Unit
+) = viewModelScope.launchWithCatch(AppExecutor.coroutineDispatcher, CoroutineStart.DEFAULT, block).catch(catcher)

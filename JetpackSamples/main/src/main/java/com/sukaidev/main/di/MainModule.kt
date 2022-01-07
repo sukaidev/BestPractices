@@ -1,6 +1,6 @@
 package com.sukaidev.main.di
 
-import com.sukaidev.main.TestApi
+import com.sukaidev.main.net.WanAndroidApi
 import com.sukaidev.net.RestClient
 import dagger.Module
 import dagger.Provides
@@ -19,5 +19,5 @@ class MainModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun provideTestApi(): TestApi = RestClient.create(TestApi::class.java)
+    fun provideTestApi(): WanAndroidApi = RestClient.create(WanAndroidApi::class.java)
 }

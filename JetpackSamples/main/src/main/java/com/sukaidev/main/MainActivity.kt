@@ -8,8 +8,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sukaidev.annotation.Destination
 import com.sukaidev.core.base.BaseActivity
 import com.sukaidev.main.databinding.ActivityMainBinding
-import com.sukaidev.restful.RestCallback
-import com.sukaidev.restful.RestResponse
 import com.sukaidev.runtime.Router
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -19,7 +17,7 @@ import javax.inject.Inject
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     @Inject
-    lateinit var api: TestApi
+    lateinit var viewModel: MainViewModel
 
     override fun onBindView(savedInstanceState: Bundle?) {
         val navView: BottomNavigationView = binding.navView
@@ -38,14 +36,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             navController.navigate(item.itemId)
             true
         }
-        api.getWanAndroidHomePage(0).enqueue(object : RestCallback<Any> {
-            override fun onFailed(throwable: Throwable) {
 
-            }
-
-            override fun onSuccess(response: RestResponse<Any>) {
-                Log.d("MainActivity", response.data.toString())
-            }
-        })
+        viewModel.getWanAndroidHomePage(0).observe(this) {
+//            Log.d("MainActivity", it)
+        }
     }
 }
