@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.sukaidev.annotation.Destination
 import com.sukaidev.core.base.BaseFragment
 import com.sukaidev.main.databinding.FragmentNotificationsBinding
-import com.sukaidev.main.notifications.NotificationsViewModel
 import com.sukaidev.runtime.Router
 import javax.inject.Inject
 

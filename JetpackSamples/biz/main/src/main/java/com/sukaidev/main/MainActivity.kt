@@ -11,7 +11,6 @@ import com.sukaidev.main.databinding.ActivityMainBinding
 import com.sukaidev.runtime.Router
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
 @AndroidEntryPoint
 @Destination(Router.HOME_MAIN_PAGE)
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -38,7 +37,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
 
         viewModel.getWanAndroidHomePage(0).observe(this) {
-//            Log.d("MainActivity", it)
+            Log.d("MainActivity", it)
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.sukaidev.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,12 +33,11 @@ class MainViewModel @Inject constructor(private val api: WanAndroidApi) : ViewMo
             }
             api.getWanAndroidHomePage(page).enqueue(object : RestCallback<Any> {
                 override fun onFailed(throwable: Throwable) {
-//                    continuation.resumeWith(Result.failure(throwable))
+                    continuation.resumeWith(Result.failure(throwable))
                 }
 
                 override fun onSuccess(response: RestResponse<Any>) {
-//                    continuation.resumeWith(Result.success(response.data.toString()))
-                    Log.d("MainActivity", response.data.toString())
+                    continuation.resumeWith(Result.success(response.data.toString()))
                 }
             })
         }

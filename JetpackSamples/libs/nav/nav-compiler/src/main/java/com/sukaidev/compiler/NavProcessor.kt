@@ -6,6 +6,7 @@ import com.sukaidev.compiler.Constants.ACTIVITY_JVM_CLASS_NAME
 import com.sukaidev.compiler.Constants.CONFIG_OUT_PUT_FILE_NAME
 import com.sukaidev.compiler.Constants.DIALOG_FRAGMENT_JVM_CLASS_NAME
 import com.sukaidev.compiler.Constants.FRAGMENT_JVM_CLASS_NAME
+import com.sukaidev.compiler.Constants.NAV_MODULE_NAME
 import com.sukaidev.compiler.ContextHolder.elements
 import com.sukaidev.compiler.ContextHolder.filer
 import com.sukaidev.compiler.ContextHolder.gson
@@ -29,12 +30,14 @@ class NavProcessor : AbstractProcessor() {
     private lateinit var activityType: TypeMirror
     private lateinit var fragmentType: TypeMirror
     private lateinit var dialogType: TypeMirror
+    private lateinit var moduleName: String
 
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
         Logger.init(processingEnv.messager)
         ContextHolder.init(processingEnv)
 
+        moduleName = processingEnv.options[NAV_MODULE_NAME] ?: ""
         activityType = elements.getTypeElement(ACTIVITY_JVM_CLASS_NAME).asType()
         fragmentType = elements.getTypeElement(FRAGMENT_JVM_CLASS_NAME).asType()
         dialogType = elements.getTypeElement(DIALOG_FRAGMENT_JVM_CLASS_NAME).asType()
@@ -95,8 +98,11 @@ class NavProcessor : AbstractProcessor() {
                 filer.createResource(StandardLocation.CLASS_OUTPUT, "", CONFIG_OUT_PUT_FILE_NAME)
                     .toUri().path
 
-            val appPath = configPath.substring(0, configPath.indexOf("app") + 4)
-            val assetsPath = appPath + "src/main/assets"
+//            val appPath = configPath.substring(0, configPath.indexOf("app") + 4)
+            val appPath =
+                configPath.substring(0, configPath.indexOf(moduleName) + moduleName.length)
+            val assetsPath = "$appPath/src/main/assets"
+//            Logger.warn("appPath: $appPath   assetsPath : $assetsPath")
             val assetsFile = File(assetsPath)
 
             // assets目录可能并未创建

@@ -6,6 +6,8 @@ package com.sukaidev.compiler
  */
 object Constants {
 
+    const val NAV_MODULE_NAME = "NAV_MODULE_NAME"
+
     const val ACTIVITY_JVM_CLASS_NAME = "android.app.Activity"
 
     const val FRAGMENT_JVM_CLASS_NAME = "androidx.fragment.app.Fragment"

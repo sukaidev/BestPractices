@@ -23,6 +23,8 @@ import java.io.InputStreamReader
  */
 object Router {
 
+    private const val TAG = "Router"
+
     const val HOME_MAIN_PAGE = "main"
 
     const val HOME_TAB_MAIN = "main/tabs/home"
@@ -32,8 +34,6 @@ object Router {
     const val HOME_TAB_NOTIFICATIONS = "main/tabs/notifications"
 
     private val destMap = HashMap<String, DestinationNode>()
-
-    private const val TAG = "Router"
 
     private const val NAV_CONFIG_FILE_NAME = "navigation_graph_config.json"
     private const val BOTTOM_CONFIG_FILE_NAME = "main_tabs_config.json"
