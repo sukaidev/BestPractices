@@ -1,7 +1,5 @@
 package com.sukaidev.restful
 
-import androidx.constraintlayout.solver.Cache
-import com.sukaidev.restful.annotation.CacheStrategy
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -48,7 +46,8 @@ class Scheduler(
         }
 
         private fun dispatchInterceptor(request: RestRequest, response: RestResponse<T>?) {
-
+            val chain = InterceptorChain(request, response)
+            chain.dispatch()
         }
 
         internal inner class InterceptorChain(

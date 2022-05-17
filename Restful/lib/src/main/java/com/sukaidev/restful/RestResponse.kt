@@ -39,4 +39,7 @@ open class RestResponse<T> {
     var origin: String? = null
 
 
+    override fun toString(): String {
+        return "RestResponse:[\ncode:$code\ndata:$data\nmsg:$msg\nerrorData:$errorData\norigin:$origin\n]"
+    }
 }

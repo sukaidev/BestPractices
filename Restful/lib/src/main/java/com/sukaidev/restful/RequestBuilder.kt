@@ -34,6 +34,7 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
 
     /**
      * 解析方法注解
+     * @param method 带注解的方法
      */
     private fun parseMethodAnnotations(method: Method) {
         val annotations = method.annotations
@@ -76,13 +77,15 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
     }
 
     /**
-     * 解析参数注解
+     * 解析方法参数注解
+     * @param method 待解析的方法
+     * @param args 方法参数列表
      */
     private fun parseMethodParameter(method: Method, args: Array<Any>) {
         val parameterAnnotations = method.parameterAnnotations
         val equals = parameterAnnotations.size == args.size
         require(equals) {
-            "method ${method.name}'s arguments annotation count dose not match expect."
+            "method ${method.name}'s arguments annotation count does not match expect."
         }
 
         for (index in args.indices) {
@@ -106,7 +109,10 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
                     relativeUrl = newRelativeUrl
                 }
                 is CacheStrategy -> {
-                    cacheStrategy = value as Int
+                    require(value is Int) {
+                        "CacheStrategy must be int value."
+                    }
+                    cacheStrategy = value
                 }
                 else -> {
                     throw IllegalStateException("cannot handle method parameter annotation : ${annotation.javaClass.name}")
@@ -115,6 +121,10 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
         }
     }
 
+    /**
+     * 判断给定[value]是否为基本类型或字符串类型
+     * @return true if [value] is primitive.
+     */
     private fun isPrimitive(value: Any): Boolean {
         if (value is String) return true
         try {
@@ -131,6 +141,8 @@ class RequestBuilder(private val baseUrl: String, method: Method, args: Array<An
 
     /**
      * 解析返回值类型
+     * [TODO("支持协程")]
+     * @param method 待解析方法
      */
     private fun parseMethodReturnType(method: Method) {
         if (method.returnType != RestCall::class.java)

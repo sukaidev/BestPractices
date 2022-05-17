@@ -81,6 +81,21 @@ open class RestRequest {
         return cacheStrategyKey
     }
 
+    override fun toString(): String {
+        return String.format(
+            "RestRequest:[\nHost:%s\nRelativeUrl:%s\nHttpMethod:%s\nisFormPost:%s\nHeaders:%s\nParameters:%s\nReturnType:%s\nCacheStrategyKey:%s\nCacheStrategy:%s\n]",
+            host,
+            relativeUrl,
+            if (httpMethod == 0) "GET" else "POST",
+            formPost,
+            headers,
+            parameters,
+            returnType,
+            cacheStrategyKey,
+            cacheStrategy
+        )
+    }
+
     @IntDef(value = [METHOD.GET, METHOD.POST])
     annotation class METHOD {
         companion object {
