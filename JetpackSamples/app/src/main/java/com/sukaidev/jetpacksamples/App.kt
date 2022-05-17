@@ -1,6 +1,7 @@
 package com.sukaidev.jetpacksamples
 
 import android.app.Application
+import android.content.Context
 import dagger.hilt.android.HiltAndroidApp
 
 /**
@@ -11,4 +12,12 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class App : Application() {
 
+    companion object {
+        lateinit var INSTANCE: App
+    }
+
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        INSTANCE = this
+    }
 }

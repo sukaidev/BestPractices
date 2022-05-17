@@ -9,13 +9,14 @@ import com.sukaidev.restful.Restful
  */
 object RestClient {
 
-    private val baseUrl = "https://www.wanandroid.com"
+    private const val baseUrl = Net.NET_WAN_ANDROID
     private val restful = Restful(baseUrl, RetrofitCallFactory(baseUrl))
 
     private val services = HashMap<Class<*>, Any>()
 
     init {
         restful.addInterceptor(AuthInterceptor())
+        restful.addInterceptor(TestInterceptor())
     }
 
     fun <T> create(service: Class<T>): T {

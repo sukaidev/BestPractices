@@ -14,7 +14,7 @@ import androidx.lifecycle.*
  */
 class StickyLiveData<T>(private val eventName: String) : LiveData<T>() {
 
-    var version: Int = -1
+    internal var version: Int = -1
 
     /**
      * 保存黏性订阅数据的最新值

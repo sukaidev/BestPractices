@@ -3,7 +3,7 @@ buildscript {
     repositories {
         maven {
             allowInsecureProtocol = true
-            url 'http://localhost:8081/repository/maven-public/'
+            url 'http://localhost:8088/repository/maven-public/'
         }
         google()
         mavenCentral()

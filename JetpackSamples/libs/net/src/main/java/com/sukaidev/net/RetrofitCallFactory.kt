@@ -10,6 +10,7 @@ import com.sukaidev.restful.RestResponse
 import com.sukaidev.restful.annotation.CacheStrategy
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import retrofit2.Call
@@ -150,10 +151,8 @@ class RetrofitCallFactory(baseUrl: String) : RestCall.Factory {
                 val requestBody: RequestBody = if (request.formPost) {
                     builder.build()
                 } else {
-                    RequestBody.create(
-                        "application/json;utf-8".toMediaTypeOrNull(),
-                        jsonObject.toString()
-                    )
+                    jsonObject.toString()
+                        .toRequestBody("application/json;utf-8".toMediaTypeOrNull())
                 }
                 return apiService.post(request.headers, request.endPointUrl(), requestBody)
             }
