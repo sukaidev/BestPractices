@@ -1,16 +1,13 @@
-package com.sukaidev.jetpacksamples
+package com.sukaidev.core
 
 import android.app.Application
 import android.content.Context
-import dagger.hilt.android.HiltAndroidApp
 
 /**
- *
- * @author sukaidev
- * @since 2021/09/21
+ * Created by suhaihong on 2022/05/30.
+ * @author suhaihong
  */
-@HiltAndroidApp
-class App : Application() {
+open class App : Application() {
 
     companion object {
         lateinit var INSTANCE: App

@@ -16,9 +16,6 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
     lateinit var notificationsViewModel: NotificationsViewModel
 
     override fun onBindView(savedInstanceState: Bundle?) {
-        notificationsViewModel =
-            ViewModelProvider(this).get(NotificationsViewModel::class.java)
-
         val textView: TextView = binding.textNotifications
         notificationsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it

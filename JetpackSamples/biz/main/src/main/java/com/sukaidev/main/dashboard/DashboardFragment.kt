@@ -16,9 +16,6 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
     lateinit var dashboardViewModel: DashboardViewModel
 
     override fun onBindView(savedInstanceState: Bundle?) {
-        dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
-
         val textView: TextView = binding.textDashboard
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
