@@ -25,5 +25,10 @@ annotation class CacheStrategy(
          * 请求接口并更新缓存
          */
         const val NET_FIRST = 2
+
+        /**
+         * 仅读取缓存
+         */
+        const val CACHE_ONLY = 3
     }
 }
